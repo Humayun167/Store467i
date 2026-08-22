@@ -23,7 +23,7 @@ interface PromptUnlockModalProps {
 }
 
 export function PromptUnlockModal({ product, onClose }: PromptUnlockModalProps) {
-  const { isPurchased, unlockProduct } = usePurchases();
+  const { isPurchased, buyWithLemonSqueezy } = usePurchases();
   const [copied, setCopied] = useState(false);
   const [selectedImgIndex, setSelectedImgIndex] = useState(0);
   const [isUnlocking, setIsUnlocking] = useState(false);
@@ -55,9 +55,7 @@ export function PromptUnlockModal({ product, onClose }: PromptUnlockModalProps) 
 
   const handleUnlock = async () => {
     setIsUnlocking(true);
-    // Simulate instantaneous checkout process
-    await new Promise((r) => setTimeout(r, 600));
-    await unlockProduct(product);
+    await buyWithLemonSqueezy(product);
     setIsUnlocking(false);
   };
 
