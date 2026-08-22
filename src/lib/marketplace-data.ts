@@ -5,6 +5,17 @@ import codeImg from "@/assets/product-code.jpg";
 import uikitImg from "@/assets/product-uikit.jpg";
 import courseImg from "@/assets/product-course.jpg";
 
+export type PromptData = {
+  model: "Midjourney v6.1" | "FLUX.1 Schnell" | "DALL-E 3" | "Stable Diffusion XL" | "ChatGPT-4o";
+  style: string;
+  sampleImages: string[];
+  rawPrompt: string;
+  negativePrompt?: string;
+  parameters: { label: string; value: string }[];
+  variables: { name: string; placeholder: string; description: string }[];
+  editingInstructions: string[];
+};
+
 export type Product = {
   id: string;
   name: string;
@@ -15,6 +26,7 @@ export type Product = {
   sales: number;
   image: string;
   tags: ("trending" | "bestseller" | "new")[];
+  promptData?: PromptData;
 };
 
 export const categories = [
@@ -29,6 +41,171 @@ export const categories = [
 ] as const;
 
 export const products: Product[] = [
+  {
+    id: "photorealistic-studio-portrait",
+    name: "8K Ultra-Realistic Studio Portrait Prompt",
+    description:
+      "Transform any subject into a Vogue-cover studio photograph. Professional lighting, Hasselblad 80mm lens depth, and authentic skin texture editing.",
+    price: 19,
+    category: "AI Prompts",
+    rating: 5.0,
+    sales: 3840,
+    image: promptsImg,
+    tags: ["bestseller", "trending"],
+    promptData: {
+      model: "Midjourney v6.1",
+      style: "High-End Editorial Photography",
+      sampleImages: [
+        promptsImg,
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+      ],
+      rawPrompt:
+        "High-fashion editorial portrait of [subject], soft Rembrandt key lighting, rim light from top right, shot on Hasselblad H6D-100c, 80mm f/1.8 lens, natural pores, ultra-detailed eyes, muted pastel backdrop --ar 4:5 --v 6.1 --stylize 250 --quality 2",
+      negativePrompt:
+        "cartoon, illustration, 3d render, plastic skin, oversaturated, blurry, bad anatomy",
+      parameters: [
+        { label: "Aspect Ratio", value: "4:5 (Instagram / Portrait)" },
+        { label: "Version", value: "Midjourney v6.1" },
+        { label: "Stylize", value: "250 (Realistic)" },
+        { label: "Quality", value: "2 (Max Texture)" },
+      ],
+      variables: [
+        {
+          name: "subject",
+          placeholder: "a 28-year-old Scandinavian woman with subtle freckles wearing a linen trench coat",
+          description: "Describe the person, clothing, and expression you want to feature.",
+        },
+      ],
+      editingInstructions: [
+        "Paste the unlocked prompt into Discord Midjourney or your image generator.",
+        "Replace [subject] with your desired character description or uploaded reference face.",
+        "To change mood, replace 'soft Rembrandt' with 'dramatic cyberpunk neon' or 'golden hour sunlight'.",
+      ],
+    },
+  },
+  {
+    id: "cyberpunk-cinematic-scenes",
+    name: "Cyberpunk Neon Night Concept Art Prompts",
+    description:
+      "Create glowing futuristic Tokyo/Neo-Seoul streetscapes with rain reflections, volumetric smog, and hologram lighting effects.",
+    price: 24,
+    category: "AI Prompts",
+    rating: 4.9,
+    sales: 2950,
+    image: promptsImg,
+    tags: ["trending"],
+    promptData: {
+      model: "FLUX.1 Schnell",
+      style: "Cinematic Sci-Fi Concept Art",
+      sampleImages: [
+        promptsImg,
+        "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
+      ],
+      rawPrompt:
+        "Cinematic wide angle shot of a futuristic [city_setting] at midnight during heavy rain, neon cyan and magenta reflections on wet asphalt, glowing holographic billboards advertising [brand_item], atmospheric steam rising, shot on Arri Alexa Mini, anamorphic lens flare --ar 16:9 --stylize 400",
+      negativePrompt: "lowres, daytime, clear sky, sketch, low contrast, washed out colors",
+      parameters: [
+        { label: "Aspect Ratio", value: "16:9 (Cinematic Wallpaper)" },
+        { label: "Model", value: "FLUX.1 / Midjourney v6" },
+        { label: "Stylize", value: "400" },
+      ],
+      variables: [
+        {
+          name: "city_setting",
+          placeholder: "narrow alleyway in Neo-Hong Kong with towering skyscrapers",
+          description: "The environment or architectural scene.",
+        },
+        {
+          name: "brand_item",
+          placeholder: "flying cybernetic delivery drones",
+          description: "Futuristic elements to scatter in the background.",
+        },
+      ],
+      editingInstructions: [
+        "Copy prompt and run directly in FLUX.1 or Midjourney.",
+        "Adjust colors by swapping 'cyan and magenta' for 'gold and amber' or 'toxic emerald green'.",
+      ],
+    },
+  },
+  {
+    id: "product-commercial-mockup-prompt",
+    name: "Minimalist 3D Luxury Product Mockup Prompt",
+    description:
+      "Generate Apple-level luxury product renders for cosmetics, perfumes, tech gadgets, and beverage packaging.",
+    price: 29,
+    category: "AI Prompts",
+    rating: 4.9,
+    sales: 2190,
+    image: promptsImg,
+    tags: ["bestseller", "new"],
+    promptData: {
+      model: "Midjourney v6.1",
+      style: "Minimalist Commercial Render",
+      sampleImages: [
+        promptsImg,
+        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=800&q=80",
+      ],
+      rawPrompt:
+        "Commercial studio product shot of [product_type], standing on a curved matte travertine pedestal, frosted glass sphere floating in background, soft morning sunlight casting long organic shadows, neutral warm beige tone palette, Octane Render 8k, C4D aesthetic --ar 1:1 --v 6.1 --style raw",
+      parameters: [
+        { label: "Aspect Ratio", value: "1:1 (Square Product Post)" },
+        { label: "Engine", value: "Octane / V-Ray Style Simulation" },
+        { label: "Style Mode", value: "Raw (Minimal AI hallucination)" },
+      ],
+      variables: [
+        {
+          name: "product_type",
+          placeholder: "a matte black glass cologne bottle with minimalist typography",
+          description: "The object or packaging design to render.",
+        },
+      ],
+      editingInstructions: [
+        "Replace [product_type] with your item.",
+        "Change background pedestal from 'matte travertine' to 'brushed titanium' or 'dark walnut wood'.",
+      ],
+    },
+  },
+  {
+    id: "anime-makoto-shinkai-aesthetic",
+    name: "Makoto Shinkai Anime Landscape & Clouds Prompt",
+    description:
+      "Vibrant anime skies, cumulonimbus cloud formations, golden hour nostalgia, and cinematic movie still aesthetic.",
+    price: 15,
+    category: "AI Prompts",
+    rating: 4.8,
+    sales: 1820,
+    image: promptsImg,
+    tags: ["new"],
+    promptData: {
+      model: "Midjourney v6.1",
+      style: "Japanese Animation / Film Still",
+      sampleImages: [
+        promptsImg,
+        "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
+      ],
+      rawPrompt:
+        "Aesthetic anime film still of [location], massive glowing cumulonimbus clouds in twilight purple sky, radiant sun rays piercing through clouds, cherry blossom petals drifting in wind, CoMix Wave Films style, art by Makoto Shinkai --ar 16:9 --niji 6 --stylize 300",
+      parameters: [
+        { label: "Model", value: "Niji Journey v6" },
+        { label: "Aspect Ratio", value: "16:9" },
+        { label: "Stylize", value: "300" },
+      ],
+      variables: [
+        {
+          name: "location",
+          placeholder: "a peaceful railway crossing overlooking the coastal ocean",
+          description: "The background environment.",
+        },
+      ],
+      editingInstructions: [
+        "Works best with Niji v6 model in Midjourney (`--niji 6`).",
+        "Customize the time of day: 'golden twilight', 'starry galaxy night', or 'summer midday rain'.",
+      ],
+    },
+  },
   {
     id: "nebula-dashboard",
     name: "Nebula Analytics Dashboard",
@@ -52,6 +229,27 @@ export const products: Product[] = [
     sales: 5320,
     image: promptsImg,
     tags: ["bestseller"],
+    promptData: {
+      model: "ChatGPT-4o",
+      style: "Full Multimodal & LLM Vault",
+      sampleImages: [promptsImg],
+      rawPrompt:
+        "ACT AS A SENIOR AI SYSTEM DESIGNER. Analyze the user problem [problem_statement] and output: 1. Architecture diagram in Mermaid. 2. Edge-case checklist. 3. Zero-shot prompt chain with structured JSON outputs.",
+      parameters: [
+        { label: "Type", value: "Mega-Prompt Bundle" },
+        { label: "Count", value: "1200+ Categorized Prompts" },
+      ],
+      variables: [
+        {
+          name: "problem_statement",
+          placeholder: "Building a multi-tenant payment gateway with automatic retry logic",
+          description: "Your business or technical task.",
+        },
+      ],
+      editingInstructions: [
+        "Copy and paste directly into ChatGPT Plus, Claude 3.5 Sonnet, or Gemini 1.5 Pro.",
+      ],
+    },
   },
   {
     id: "flux-flutter-kit",
@@ -126,18 +324,6 @@ export const products: Product[] = [
     tags: ["new"],
   },
   {
-    id: "midjourney-art-pack",
-    name: "Midjourney Art Director Pack",
-    description:
-      "400 cinematic image prompts with camera, lens and lighting recipes — consistent style across every render.",
-    price: 34,
-    category: "AI Prompts",
-    rating: 4.8,
-    sales: 2680,
-    image: promptsImg,
-    tags: ["trending"],
-  },
-  {
     id: "quantum-landing-kit",
     name: "Quantum Landing Page Kit",
     description:
@@ -173,61 +359,13 @@ export const products: Product[] = [
     image: codeImg,
     tags: ["trending"],
   },
-  {
-    id: "seo-automation-scripts",
-    name: "SEO Automation Script Bundle",
-    description:
-      "27 Python scripts for rank tracking, sitemap audits, broken-link sweeps and automated Search Console reports.",
-    price: 49,
-    category: "Web Scripts",
-    rating: 4.5,
-    sales: 780,
-    image: codeImg,
-    tags: ["new"],
-  },
-  {
-    id: "neon-dashboard-ui",
-    name: "Neon Dashboard UI Kit",
-    description:
-      "Dark-first dashboard components: data tables, charts, command palette and 60 crafted empty states.",
-    price: 65,
-    category: "UI Kits",
-    rating: 4.9,
-    sales: 2210,
-    image: uikitImg,
-    tags: ["bestseller", "trending"],
-  },
-  {
-    id: "prompt-engineering-course",
-    name: "Prompt Engineering for Engineers",
-    description:
-      "9 hours on evals, structured outputs, tool calling and cost control for production LLM features.",
-    price: 119,
-    category: "Courses",
-    rating: 4.9,
-    sales: 610,
-    image: courseImg,
-    tags: ["trending", "new"],
-  },
-  {
-    id: "indie-launch-ebook",
-    name: "The Indie Launch Playbook",
-    description:
-      "180 pages on pricing, positioning and launch sequencing, with teardown notes from 12 real product launches.",
-    price: 25,
-    category: "E-books",
-    rating: 4.6,
-    sales: 1340,
-    image: courseImg,
-    tags: ["bestseller"],
-  },
 ];
 
 export const features = [
-  { title: "Instant Download", body: "Files unlock the second payment clears — no waiting, no emails.", icon: "Download" },
+  { title: "Instant Download & Unlock", body: "Prompts and source files unlock the second payment clears — instant copy & download.", icon: "Download" },
   { title: "Secure Payment", body: "PCI-compliant checkout with fraud screening on every transaction.", icon: "ShieldCheck" },
   { title: "Lifetime Access", body: "Buy once, re-download forever, including every future update.", icon: "Infinity" },
-  { title: "Premium Quality", body: "Every listing is reviewed by senior engineers before it goes live.", icon: "Gem" },
+  { title: "Tested Prompts", body: "Every prompt is tested with 50+ generation seeds to ensure consistent quality.", icon: "Sparkles" },
   { title: "Verified Products", body: "Licenses, dependencies and security are checked and documented.", icon: "BadgeCheck" },
   { title: "Customer Support", body: "Real humans answering in under 4 hours, seven days a week.", icon: "Headphones" },
 ];
@@ -286,9 +424,9 @@ export const plans = [
     tagline: "For working developers shipping weekly",
     features: [
       "Unlimited downloads",
+      "All AI prompts unlocked",
       "Commercial license",
       "Early access drops",
-      "AI recommendations",
       "Priority support",
     ],
     highlight: true,

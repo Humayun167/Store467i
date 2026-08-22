@@ -1,12 +1,13 @@
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
-import { Eye, Heart, ShoppingCart, Star } from "lucide-react";
+import { Eye, Heart, Lock, ShoppingCart, Sparkles, Star, Unlock } from "lucide-react";
 import type { MouseEvent } from "react";
-import { toast } from "sonner";
 import type { Product } from "@/lib/marketplace-data";
 import { useSitePrefs } from "@/hooks/use-site-prefs";
+import { usePurchases } from "@/hooks/use-purchases";
 
 export function ProductCard({ product, onPreview }: { product: Product; onPreview: (p: Product) => void }) {
   const { isWished, toggleWishlist } = useSitePrefs();
+  const { isPurchased, unlockProduct } = usePurchases();
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), { stiffness: 220, damping: 20 });
@@ -19,6 +20,8 @@ export function ProductCard({ product, onPreview }: { product: Product; onPrevie
   };
 
   const wished = isWished(product.id);
+  const unlocked = isPurchased(product.id);
+  const isPrompt = !!product.promptData;
 
   return (
     <motion.div
@@ -45,16 +48,32 @@ export function ProductCard({ product, onPreview }: { product: Product; onPrevie
           className="size-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-[linear-gradient(to_top,var(--background),transparent_55%)] opacity-80" />
-        <span className="glass absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-medium">
-          {product.category}
-        </span>
-        <button
-          aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
-          onClick={() => toggleWishlist(product.id)}
-          className="glass absolute right-3 top-3 grid size-9 place-items-center rounded-full transition-colors hover:border-accent"
-        >
-          <Heart className={`size-4 ${wished ? "fill-accent text-accent" : "text-muted-foreground"}`} />
-        </button>
+
+        <div className="absolute left-3 top-3 flex items-center gap-1.5 flex-wrap">
+          <span className="glass rounded-full px-3 py-1 text-[11px] font-medium">
+            {product.category}
+          </span>
+          {isPrompt && (
+            <span className="rounded-full bg-primary/20 backdrop-blur-md border border-primary/40 px-2.5 py-0.5 text-[10px] font-bold text-primary-foreground flex items-center gap-1">
+              <Sparkles className="size-3 text-secondary" /> {product.promptData?.model}
+            </span>
+          )}
+        </div>
+
+        <div className="absolute right-3 top-3 flex items-center gap-1.5">
+          {unlocked && (
+            <span className="rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/40 px-2.5 py-1 text-[10px] font-bold text-emerald-400 flex items-center gap-1">
+              <Unlock className="size-3" /> Unlocked
+            </span>
+          )}
+          <button
+            aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
+            onClick={() => toggleWishlist(product.id)}
+            className="glass grid size-9 place-items-center rounded-full transition-colors hover:border-accent"
+          >
+            <Heart className={`size-4 ${wished ? "fill-accent text-accent" : "text-muted-foreground"}`} />
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col p-5">
@@ -73,15 +92,35 @@ export function ProductCard({ product, onPreview }: { product: Product; onPrevie
         <div className="mt-5 flex gap-2">
           <button
             onClick={() => onPreview(product)}
-            className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:border-secondary"
+            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:border-secondary"
           >
-            <Eye className="size-4" /> Preview
+            <Eye className="size-4" /> {isPrompt ? "Sample & Prompt" : "Preview"}
           </button>
           <button
-            onClick={() => toast.success("Added to cart", { description: product.name })}
-            className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[image:var(--gradient-brand)] px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105"
+            onClick={() => {
+              if (isPrompt && !unlocked) {
+                onPreview(product);
+              } else {
+                unlockProduct(product);
+              }
+            }}
+            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[image:var(--gradient-brand)] px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105"
           >
-            <ShoppingCart className="size-4" /> Buy now
+            {isPrompt ? (
+              unlocked ? (
+                <>
+                  <Unlock className="size-4" /> View Prompt
+                </>
+              ) : (
+                <>
+                  <Lock className="size-4" /> Unlock Prompt
+                </>
+              )
+            ) : (
+              <>
+                <ShoppingCart className="size-4" /> Buy now
+              </>
+            )}
           </button>
         </div>
       </div>

@@ -17,6 +17,7 @@ import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { SitePrefsProvider } from "@/hooks/use-site-prefs";
 import { AuthProvider } from "@/hooks/use-auth";
+import { PurchasesProvider } from "@/hooks/use-purchases";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -132,22 +133,24 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <SitePrefsProvider>
-          <Nav />
-          <main className="min-h-screen">
-            <motion.div
-              key={pathname}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-            >
-              {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-              <Outlet />
-            </motion.div>
-          </main>
-          <Footer />
-          <Toaster position="bottom-right" />
-        </SitePrefsProvider>
+        <PurchasesProvider>
+          <SitePrefsProvider>
+            <Nav />
+            <main className="min-h-screen">
+              <motion.div
+                key={pathname}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+                <Outlet />
+              </motion.div>
+            </main>
+            <Footer />
+            <Toaster position="bottom-right" />
+          </SitePrefsProvider>
+        </PurchasesProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

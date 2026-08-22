@@ -13,12 +13,18 @@ import {
   Check,
   X,
   Loader2,
+  Sparkles,
+  Copy,
+  Unlock,
 } from "lucide-react";
 import { motion } from "motion/react";
 import { updateProfile } from "firebase/auth";
 import { useAuth } from "@/hooks/use-auth";
 import { useSitePrefs } from "@/hooks/use-site-prefs";
+import { usePurchases } from "@/hooks/use-purchases";
 import { auth } from "@/lib/firebase";
+import { PromptUnlockModal } from "@/components/site/PromptUnlockModal";
+import type { Product } from "@/lib/marketplace-data";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
@@ -60,11 +66,13 @@ function StatCard({
 function ProfilePage() {
   const { currentUser, signOut } = useAuth();
   const { wishlist } = useSitePrefs();
+  const { unlockedProducts } = usePurchases();
   const navigate = useNavigate();
 
   const [editingName, setEditingName] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [savingName, setSavingName] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -156,7 +164,6 @@ function ProfilePage() {
                   {initials}
                 </div>
               )}
-              {/* Photo upload hint (UI only — Firebase Storage not wired) */}
               <button
                 id="profile-avatar-btn"
                 onClick={() => fileInputRef.current?.click()}
@@ -280,8 +287,8 @@ function ProfilePage() {
         >
           <StatCard
             icon={ShoppingBag}
-            label="Purchases"
-            value={0}
+            label="Purchased Items"
+            value={unlockedProducts.length}
             gradient="linear-gradient(135deg, oklch(0.55 0.24 296), oklch(0.65 0.24 320))"
           />
           <StatCard
@@ -293,9 +300,87 @@ function ProfilePage() {
           <StatCard
             icon={User}
             label="Account type"
-            value="Free"
+            value="Free Tier"
             gradient="linear-gradient(135deg, oklch(0.83 0.14 200), oklch(0.75 0.16 220))"
           />
+        </motion.div>
+
+        {/* ── Unlocked Prompts & Products Section ───────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="glass mt-6 rounded-3xl p-8"
+        >
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="font-display text-lg font-semibold flex items-center gap-2">
+              <Sparkles className="size-5 text-secondary" /> My Unlocked Prompts & Downloads
+            </h2>
+            <span className="text-xs text-muted-foreground">{unlockedProducts.length} items</span>
+          </div>
+
+          {unlockedProducts.length > 0 ? (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {unlockedProducts.map((p) => (
+                <div
+                  key={p.id}
+                  className="rounded-2xl border border-border bg-surface/40 p-4 flex gap-3.5 items-start transition hover:border-primary/50"
+                >
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    className="size-16 rounded-xl object-cover shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <span className="rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 flex items-center gap-1">
+                        <Unlock className="size-2.5" /> Unlocked
+                      </span>
+                      {p.promptData && (
+                        <span className="text-[10px] text-muted-foreground font-medium truncate">
+                          {p.promptData.model}
+                        </span>
+                      )}
+                    </div>
+                    <h4 className="font-semibold text-sm mt-1 truncate">{p.name}</h4>
+                    <div className="mt-2.5 flex gap-2">
+                      <button
+                        onClick={() => setSelectedProduct(p)}
+                        className="rounded-lg bg-primary/20 border border-primary/40 px-2.5 py-1 text-xs font-medium text-primary-foreground hover:bg-primary/30 transition"
+                      >
+                        View & Customize
+                      </button>
+                      {p.promptData && (
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(p.promptData!.rawPrompt);
+                            toast.success("Prompt copied!");
+                          }}
+                          className="rounded-lg border border-border px-2.5 py-1 text-xs font-medium text-muted-foreground hover:text-foreground transition flex items-center gap-1"
+                        >
+                          <Copy className="size-3" /> Copy
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8 rounded-2xl border border-dashed border-border/80 p-6">
+              <Sparkles className="size-8 mx-auto text-muted-foreground opacity-50 mb-2" />
+              <p className="text-sm font-medium text-foreground">No prompts unlocked yet</p>
+              <p className="text-xs text-muted-foreground mt-1 max-w-sm mx-auto">
+                Explore our catalog of tested Midjourney, FLUX and image editing prompts to unlock full parameters and copy access.
+              </p>
+              <Link
+                to="/products"
+                className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-[image:var(--gradient-brand)] px-5 py-2 text-xs font-semibold text-primary-foreground transition hover:scale-105"
+              >
+                Browse AI Prompts
+              </Link>
+            </div>
+          )}
         </motion.div>
 
         {/* ── Account details card ─────────────────────── */}
@@ -358,6 +443,9 @@ function ProfilePage() {
           ))}
         </motion.div>
       </div>
+
+      {/* Modal for viewing unlocked prompt */}
+      <PromptUnlockModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
     </section>
   );
 }
