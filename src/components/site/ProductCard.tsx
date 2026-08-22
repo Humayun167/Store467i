@@ -5,9 +5,15 @@ import type { Product } from "@/lib/marketplace-data";
 import { useSitePrefs } from "@/hooks/use-site-prefs";
 import { usePurchases } from "@/hooks/use-purchases";
 
-export function ProductCard({ product, onPreview }: { product: Product; onPreview: (p: Product) => void }) {
+export function ProductCard({
+  product,
+  onPreview,
+}: {
+  product: Product;
+  onPreview: (p: Product) => void;
+}) {
   const { isWished, toggleWishlist } = useSitePrefs();
-  const { isPurchased, unlockProduct } = usePurchases();
+  const { isPurchased } = usePurchases();
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), { stiffness: 220, damping: 20 });
@@ -38,7 +44,10 @@ export function ProductCard({ product, onPreview }: { product: Product; onPrevie
       whileHover={{ scale: 1.02 }}
       className="glass glow-ring group relative flex flex-col overflow-hidden rounded-3xl"
     >
-      <div className="relative aspect-[4/3] overflow-hidden">
+      <div
+        className="relative aspect-[4/3] overflow-hidden cursor-pointer"
+        onClick={() => onPreview(product)}
+      >
         <img
           src={product.image}
           alt={`${product.name} preview`}
@@ -68,7 +77,10 @@ export function ProductCard({ product, onPreview }: { product: Product; onPrevie
           )}
           <button
             aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
-            onClick={() => toggleWishlist(product.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleWishlist(product.id);
+            }}
             className="glass grid size-9 place-items-center rounded-full transition-colors hover:border-accent"
           >
             <Heart className={`size-4 ${wished ? "fill-accent text-accent" : "text-muted-foreground"}`} />
@@ -77,8 +89,13 @@ export function ProductCard({ product, onPreview }: { product: Product; onPrevie
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="font-display text-base font-semibold leading-snug">{product.name}</h3>
+        <div
+          className="flex items-start justify-between gap-3 cursor-pointer"
+          onClick={() => onPreview(product)}
+        >
+          <h3 className="font-display text-base font-semibold leading-snug hover:text-primary transition">
+            {product.name}
+          </h3>
           <span className="shrink-0 font-display text-lg font-bold text-gradient">${product.price}</span>
         </div>
         <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{product.description}</p>
@@ -97,13 +114,7 @@ export function ProductCard({ product, onPreview }: { product: Product; onPrevie
             <Eye className="size-4" /> {isPrompt ? "Sample & Prompt" : "Preview"}
           </button>
           <button
-            onClick={() => {
-              if (isPrompt && !unlocked) {
-                onPreview(product);
-              } else {
-                unlockProduct(product);
-              }
-            }}
+            onClick={() => onPreview(product)}
             className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[image:var(--gradient-brand)] px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105"
           >
             {isPrompt ? (
@@ -118,7 +129,7 @@ export function ProductCard({ product, onPreview }: { product: Product; onPrevie
               )
             ) : (
               <>
-                <ShoppingCart className="size-4" /> Buy now
+                <ShoppingCart className="size-4" /> Buy now (${product.price})
               </>
             )}
           </button>
