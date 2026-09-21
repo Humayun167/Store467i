@@ -27,6 +27,7 @@ export type Product = {
   image: string;
   tags: ("trending" | "bestseller" | "new")[];
   promptData?: PromptData;
+  gumroadUrl?: string;
 };
 
 export const categories = [
@@ -46,6 +47,51 @@ export function formatPrice(price: number): string {
 
 export const products: Product[] = [
   {
+    id: "ultra-hdr-cinematic-portrait",
+    name: "8K Ultra-HDR Cinematic Portrait & Master Lighting Prompt",
+    description:
+      "Studio-grade photorealistic portrait prompt with dramatic Rembrandt lighting, Hasselblad 85mm lens depth, authentic skin pores, and 8K cinematic color grading.",
+    price: 1,
+    category: "AI Prompts",
+    rating: 5.0,
+    sales: 4120,
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+    tags: ["bestseller", "trending", "new"],
+    gumroadUrl: "https://store467i.gumroad.com/l/gjlsnf",
+    promptData: {
+      model: "Midjourney v6.1",
+      style: "Cinematic Editorial Portrait",
+      sampleImages: [
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
+      ],
+      rawPrompt:
+        "Cinematic studio portrait of [subject], dramatic chiaroscuro Rembrandt lighting, warm amber rim light, shot on Hasselblad H6D-100c, 85mm f/1.4 lens, natural skin texture with visible pores, ultra-fine details, neutral editorial backdrop --ar 4:5 --v 6.1 --stylize 250 --quality 2",
+      negativePrompt:
+        "blurry, cartoon, illustration, 3d render, plastic smooth skin, oversaturated, deformed eyes, extra fingers",
+      parameters: [
+        { label: "Price Deal", value: "$1.00 Instant Unlock" },
+        { label: "Model", value: "Midjourney v6.1 / FLUX.1" },
+        { label: "Aspect Ratio", value: "4:5 (Portrait / Instagram)" },
+        { label: "Stylize", value: "250 (High Realism)" },
+        { label: "Quality", value: "2 (Maximum Texture Detail)" },
+      ],
+      variables: [
+        {
+          name: "subject",
+          placeholder: "a stylish 25-year-old creative director wearing an oversized black wool coat",
+          description: "Describe the person, emotion, clothing, and background styling.",
+        },
+      ],
+      editingInstructions: [
+        "Copy and paste the prompt into Midjourney v6.1 Discord or web interface.",
+        "Replace [subject] with your character, celebrity lookalike, or wardrobe preference.",
+        "Switch lighting from 'warm amber rim light' to 'cyberpunk cyan neon' or 'soft morning window glow' to alter the atmosphere.",
+      ],
+    },
+  },
+  {
     id: "photorealistic-studio-portrait",
     name: "8K Ultra-Realistic Studio Portrait Prompt",
     description:
@@ -56,6 +102,7 @@ export const products: Product[] = [
     sales: 3840,
     image: promptsImg,
     tags: ["bestseller", "trending"],
+    gumroadUrl: "https://humayun66e.gumroad.com/l/gqorus",
     promptData: {
       model: "Midjourney v6.1",
       style: "High-End Editorial Photography",

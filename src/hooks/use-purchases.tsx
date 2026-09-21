@@ -90,7 +90,7 @@ export function PurchasesProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const targetUrl = gumroadUrl || GUMROAD_PRODUCT_URL;
+    const targetUrl = gumroadUrl || product.gumroadUrl || GUMROAD_PRODUCT_URL;
 
     // Store pending product id so we can unlock it when the sale event fires
     sessionStorage.setItem("__gumroad_pending_product", product.id);

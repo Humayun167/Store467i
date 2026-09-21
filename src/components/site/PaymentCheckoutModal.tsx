@@ -50,7 +50,7 @@ export function PaymentCheckoutModal({
     if (paymentMethod === "gumroad") {
       // Store pending product for auto-unlock on sale event
       sessionStorage.setItem("__gumroad_pending_product", product.id);
-      openGumroadCheckout(GUMROAD_PRODUCT_URL);
+      openGumroadCheckout(product.gumroadUrl || GUMROAD_PRODUCT_URL);
       setIsProcessing(false);
       return;
     }
