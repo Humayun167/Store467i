@@ -14,7 +14,7 @@ import {
   Zap,
 } from "lucide-react";
 import { toast } from "sonner";
-import type { Product } from "@/lib/marketplace-data";
+import { type Product, formatPrice } from "@/lib/marketplace-data";
 import { usePurchases } from "@/hooks/use-purchases";
 import { PaymentCheckoutModal } from "./PaymentCheckoutModal";
 
@@ -161,7 +161,7 @@ export function PromptUnlockModal({ product, onClose }: PromptUnlockModalProps) 
                         </span>
                       )}
                     </div>
-                    <span className="font-display text-2xl font-bold text-gradient">${product.price}</span>
+                    <span className="font-display text-2xl font-bold text-gradient">${formatPrice(product.price)}</span>
                   </div>
                   <p className="mt-3 text-sm text-muted-foreground">{product.description}</p>
                 </div>
@@ -317,7 +317,7 @@ export function PromptUnlockModal({ product, onClose }: PromptUnlockModalProps) 
                     <div className="rounded-2xl border border-primary/30 bg-[image:var(--gradient-glow)] p-6 text-center">
                       <div className="flex items-center justify-center gap-2 text-2xl font-bold font-display">
                         <span className="text-muted-foreground text-sm font-normal">One-time price:</span>
-                        <span className="text-gradient">${product.price}</span>
+                        <span className="text-gradient">${formatPrice(product.price)}</span>
                       </div>
                       <p className="text-xs text-muted-foreground mt-1 mb-4">
                         Instant access · Commercial use allowed · Money-back guarantee
@@ -327,7 +327,7 @@ export function PromptUnlockModal({ product, onClose }: PromptUnlockModalProps) 
                         onClick={() => setIsPaymentOpen(true)}
                         className="glow-ring w-full flex items-center justify-center gap-2 rounded-full bg-[image:var(--gradient-brand)] py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
                       >
-                        <CreditCard className="size-4" /> Unlock Prompt Now (${product.price})
+                        <CreditCard className="size-4" /> Unlock Prompt Now (${formatPrice(product.price)})
                       </button>
                     </div>
                   </div>

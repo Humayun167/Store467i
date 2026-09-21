@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion } from "motion/react";
 import { Search, X, Sparkles, Filter } from "lucide-react";
-import { categories, products, type Product } from "@/lib/marketplace-data";
+import { categories, products, type Product, formatPrice } from "@/lib/marketplace-data";
 import { ProductCard } from "./ProductCard";
 import { useSitePrefs } from "@/hooks/use-site-prefs";
 import { PromptUnlockModal } from "./PromptUnlockModal";
@@ -146,7 +146,7 @@ export function Recommendations() {
             </div>
             <h4 className="mt-3 font-display text-sm font-semibold">{p.name}</h4>
             <p className="mt-1.5 line-clamp-2 text-xs text-muted-foreground">{p.description}</p>
-            <p className="mt-3 text-sm font-semibold text-gradient">${p.price}</p>
+            <p className="mt-3 text-sm font-semibold text-gradient">${formatPrice(p.price)}</p>
           </motion.div>
         ))}
       </div>

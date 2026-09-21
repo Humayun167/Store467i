@@ -11,7 +11,7 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { toast } from "sonner";
-import type { Product } from "@/lib/marketplace-data";
+import { type Product, formatPrice } from "@/lib/marketplace-data";
 import { usePurchases } from "@/hooks/use-purchases";
 import { useAuth } from "@/hooks/use-auth";
 import { openGumroadCheckout, GUMROAD_PRODUCT_URL } from "@/lib/gumroad";
@@ -140,7 +140,7 @@ export function PaymentCheckoutModal({
                   </span>
                 </div>
                 <div className="text-right">
-                  <span className="font-display text-lg font-bold text-gradient">${product.price}</span>
+                  <span className="font-display text-lg font-bold text-gradient">${formatPrice(product.price)}</span>
                   <span className="text-[10px] text-muted-foreground block">One-time</span>
                 </div>
               </div>
@@ -253,7 +253,7 @@ export function PaymentCheckoutModal({
                     </>
                   ) : (
                     <>
-                      <Lock className="size-4" /> Pay ${product.price} & Unlock
+                      <Lock className="size-4" /> Pay ${formatPrice(product.price)} & Unlock
                     </>
                   )}
                 </button>

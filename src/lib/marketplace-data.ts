@@ -40,13 +40,17 @@ export const categories = [
   { name: "Courses", count: 174, icon: "GraduationCap" },
 ] as const;
 
+export function formatPrice(price: number): string {
+  return price % 1 === 0 ? price.toString() : price.toFixed(2);
+}
+
 export const products: Product[] = [
   {
     id: "photorealistic-studio-portrait",
     name: "8K Ultra-Realistic Studio Portrait Prompt",
     description:
       "Transform any subject into a Vogue-cover studio photograph. Professional lighting, Hasselblad 80mm lens depth, and authentic skin texture editing.",
-    price: 19,
+    price: 2.1,
     category: "AI Prompts",
     rating: 5.0,
     sales: 3840,

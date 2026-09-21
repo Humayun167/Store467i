@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { Link } from "@tanstack/react-router";
 import * as Icons from "lucide-react";
-import { categories, features, plans, products, testimonials } from "@/lib/marketplace-data";
+import { categories, features, plans, products, testimonials, formatPrice } from "@/lib/marketplace-data";
 
 function Icon({ name, className }: { name: string; className?: string }) {
   const Cmp = (Icons as unknown as Record<string, React.ComponentType<{ className?: string }>>)[name] ?? Icons.Box;
@@ -203,7 +203,7 @@ export function ProductStrip({ tag, title }: { tag: "trending" | "bestseller" | 
             />
             <span className="min-w-0">
               <span className="block truncate text-sm font-medium">{p.name}</span>
-              <span className="text-xs text-muted-foreground">${p.price}</span>
+              <span className="text-xs text-muted-foreground">${formatPrice(p.price)}</span>
             </span>
           </motion.div>
         ))}

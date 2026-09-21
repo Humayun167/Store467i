@@ -1,7 +1,7 @@
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import { Eye, Heart, Lock, ShoppingCart, Sparkles, Star, Unlock } from "lucide-react";
 import type { MouseEvent } from "react";
-import type { Product } from "@/lib/marketplace-data";
+import { type Product, formatPrice } from "@/lib/marketplace-data";
 import { useSitePrefs } from "@/hooks/use-site-prefs";
 import { usePurchases } from "@/hooks/use-purchases";
 
@@ -96,7 +96,7 @@ export function ProductCard({
           <h3 className="font-display text-base font-semibold leading-snug hover:text-primary transition">
             {product.name}
           </h3>
-          <span className="shrink-0 font-display text-lg font-bold text-gradient">${product.price}</span>
+          <span className="shrink-0 font-display text-lg font-bold text-gradient">${formatPrice(product.price)}</span>
         </div>
         <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{product.description}</p>
 
@@ -129,7 +129,7 @@ export function ProductCard({
               )
             ) : (
               <>
-                <ShoppingCart className="size-4" /> Buy now (${product.price})
+                <ShoppingCart className="size-4" /> Buy now (${formatPrice(product.price)})
               </>
             )}
           </button>
