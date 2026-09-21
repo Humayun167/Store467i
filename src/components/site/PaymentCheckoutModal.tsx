@@ -8,13 +8,13 @@ import {
   CheckCircle2,
   Loader2,
   Sparkles,
-  Zap,
+  ShoppingBag,
 } from "lucide-react";
 import { toast } from "sonner";
 import type { Product } from "@/lib/marketplace-data";
 import { usePurchases } from "@/hooks/use-purchases";
 import { useAuth } from "@/hooks/use-auth";
-import { openLemonCheckout } from "@/lib/lemon-squeezy";
+import { openGumroadCheckout, GUMROAD_PRODUCT_URL } from "@/lib/gumroad";
 
 interface PaymentCheckoutModalProps {
   product: Product | null;
@@ -32,7 +32,7 @@ export function PaymentCheckoutModal({
   const { unlockProduct } = usePurchases();
   const { currentUser } = useAuth();
 
-  const [paymentMethod, setPaymentMethod] = useState<"card" | "lemonsqueezy">("card");
+  const [paymentMethod, setPaymentMethod] = useState<"card" | "gumroad">("card");
   const [cardNumber, setCardNumber] = useState("4242 •••• •••• 4242");
   const [expiry, setExpiry] = useState("12/28");
   const [cvc, setCvc] = useState("789");
@@ -46,10 +46,11 @@ export function PaymentCheckoutModal({
     e.preventDefault();
     setIsProcessing(true);
 
-    if (paymentMethod === "lemonsqueezy") {
-      // If store checkout is selected
-      const storeCheckoutUrl = `https://store467i.lemonsqueezy.com/buy`;
-      openLemonCheckout(storeCheckoutUrl);
+
+    if (paymentMethod === "gumroad") {
+      // Store pending product for auto-unlock on sale event
+      sessionStorage.setItem("__gumroad_pending_product", product.id);
+      openGumroadCheckout(GUMROAD_PRODUCT_URL);
       setIsProcessing(false);
       return;
     }
@@ -159,14 +160,14 @@ export function PaymentCheckoutModal({
                 </button>
                 <button
                   type="button"
-                  onClick={() => setPaymentMethod("lemonsqueezy")}
+                  onClick={() => setPaymentMethod("gumroad")}
                   className={`flex items-center justify-center gap-2 rounded-xl border p-2.5 text-xs font-semibold transition ${
-                    paymentMethod === "lemonsqueezy"
-                      ? "border-primary bg-primary/15 text-primary-foreground shadow"
+                    paymentMethod === "gumroad"
+                      ? "border-[oklch(0.7_0.18_15)] bg-[oklch(0.7_0.18_15/15%)] text-foreground shadow"
                       : "border-border text-muted-foreground hover:text-foreground bg-surface/30"
                   }`}
                 >
-                  <Zap className="size-4 text-accent" /> Lemon Squeezy
+                  <ShoppingBag className="size-4 text-[oklch(0.7_0.18_15)]" /> Gumroad
                 </button>
               </div>
 
@@ -227,13 +228,18 @@ export function PaymentCheckoutModal({
                       />
                     </div>
                   </>
-                ) : (
-                  <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 text-center space-y-2">
+                ) : paymentMethod === "gumroad" ? (
+                  <div className="rounded-2xl border border-[oklch(0.7_0.18_15/40%)] bg-[oklch(0.7_0.18_15/5%)] p-4 text-center space-y-2">
+                    <div className="grid size-10 place-items-center rounded-full bg-[oklch(0.7_0.18_15/15%)] mx-auto mb-2">
+                      <ShoppingBag className="size-5 text-[oklch(0.7_0.18_15)]" />
+                    </div>
+                    <p className="text-xs font-semibold text-foreground">Gumroad Secure Checkout</p>
                     <p className="text-xs text-muted-foreground">
-                      Clicking below will open the Lemon Squeezy hosted overlay checkout window.
+                      Clicking below will open the Gumroad overlay checkout.
+                      Your purchase will be processed securely by Gumroad.
                     </p>
                   </div>
-                )}
+                ) : null}
 
                 {/* Submit button */}
                 <button

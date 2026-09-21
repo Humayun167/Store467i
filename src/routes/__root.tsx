@@ -107,7 +107,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     scripts: [
       {
-        src: "https://assets.lemonsqueezy.com/lemon.js",
+        src: "https://gumroad.com/js/gumroad.js",
         defer: true,
       },
     ],

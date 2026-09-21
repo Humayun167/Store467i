@@ -2,13 +2,13 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { toast } from "sonner";
 import { products, type Product } from "@/lib/marketplace-data";
 import { useAuth } from "./use-auth";
-import { initLemonSqueezy, openLemonCheckout } from "@/lib/lemon-squeezy";
+import { initGumroad, openGumroadCheckout, GUMROAD_PRODUCT_URL } from "@/lib/gumroad";
 
 interface PurchasesContextType {
   purchasedIds: string[];
   isPurchased: (id: string) => boolean;
   unlockProduct: (product: Product) => Promise<boolean>;
-  buyWithLemonSqueezy: (product: Product, checkoutUrl?: string) => Promise<void>;
+  buyWithGumroad: (product: Product, gumroadUrl?: string) => Promise<void>;
   unlockedProducts: Product[];
 }
 
@@ -20,20 +20,22 @@ export function PurchasesProvider({ children }: { children: ReactNode }) {
   const { currentUser } = useAuth();
   const [purchasedIds, setPurchasedIds] = useState<string[]>([]);
 
-  // Initialize Lemon Squeezy event listener
+
+  // Initialize Gumroad sale event listener (postMessage based)
   useEffect(() => {
-    initLemonSqueezy((data) => {
-      const customData = data?.order?.data?.attributes?.custom_data;
-      const productId = customData?.product_id;
-      if (productId) {
-        const found = products.find((p) => p.id === productId);
+    initGumroad((data) => {
+      // Gumroad sale detected via postMessage from the overlay iframe
+      toast.success("Gumroad Purchase Completed! 🎉", {
+        description: "Your digital product has been unlocked.",
+      });
+      // If we stored a pending product id, unlock it
+      const pendingId = sessionStorage.getItem("__gumroad_pending_product");
+      if (pendingId) {
+        const found = products.find((p) => p.id === pendingId);
         if (found) {
           unlockProduct(found);
         }
-      } else {
-        toast.success("Lemon Squeezy Order Completed! 🎉", {
-          description: "Your digital prompt and files are now ready.",
-        });
+        sessionStorage.removeItem("__gumroad_pending_product");
       }
     });
   }, [currentUser, purchasedIds]);
@@ -81,28 +83,19 @@ export function PurchasesProvider({ children }: { children: ReactNode }) {
     return true;
   };
 
-  const buyWithLemonSqueezy = async (product: Product, checkoutUrl?: string) => {
+
+  const buyWithGumroad = async (product: Product, gumroadUrl?: string) => {
     if (isPurchased(product.id)) {
       toast.info("Already Owned", { description: "You have already unlocked this prompt." });
       return;
     }
 
-    if (checkoutUrl) {
-      // Append user info and product_id to custom data
-      const url = new URL(checkoutUrl);
-      if (currentUser?.email) {
-        url.searchParams.set("checkout[email]", currentUser.email);
-      }
-      if (currentUser?.displayName) {
-        url.searchParams.set("checkout[name]", currentUser.displayName);
-      }
-      url.searchParams.set("checkout[custom][product_id]", product.id);
+    const targetUrl = gumroadUrl || GUMROAD_PRODUCT_URL;
 
-      openLemonCheckout(url.toString());
-    } else {
-      // Direct instant simulated checkout if specific Lemon Squeezy variant is not yet attached
-      await unlockProduct(product);
-    }
+    // Store pending product id so we can unlock it when the sale event fires
+    sessionStorage.setItem("__gumroad_pending_product", product.id);
+
+    openGumroadCheckout(targetUrl);
   };
 
   const unlockedProducts = products.filter((p) => purchasedIds.includes(p.id));
@@ -113,7 +106,7 @@ export function PurchasesProvider({ children }: { children: ReactNode }) {
         purchasedIds,
         isPurchased,
         unlockProduct,
-        buyWithLemonSqueezy,
+        buyWithGumroad,
         unlockedProducts,
       }}
     >

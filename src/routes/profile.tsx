@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import type { LucideIcon } from "lucide-react";
 import {
   Camera,
   LogOut,
@@ -43,7 +44,7 @@ function StatCard({
   value,
   gradient,
 }: {
-  icon: React.ElementType;
+  icon: LucideIcon;
   label: string;
   value: string | number;
   gradient: string;
