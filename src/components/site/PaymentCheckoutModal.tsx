@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { type Product, formatPrice } from "@/lib/marketplace-data";
 import { usePurchases } from "@/hooks/use-purchases";
 import { useAuth } from "@/hooks/use-auth";
-import { openGumroadCheckout, GUMROAD_PRODUCT_URL } from "@/lib/gumroad";
+import { openGumroadCheckout } from "@/lib/gumroad";
 
 interface PaymentCheckoutModalProps {
   product: Product | null;
@@ -41,6 +41,7 @@ export function PaymentCheckoutModal({
   const [isSuccess, setIsSuccess] = useState(false);
 
   if (!product || !isOpen) return null;
+  if (!currentUser) return null;  // Guard: must be logged in to pay
 
   const handlePay = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +51,7 @@ export function PaymentCheckoutModal({
     if (paymentMethod === "gumroad") {
       // Store pending product for auto-unlock on sale event
       sessionStorage.setItem("__gumroad_pending_product", product.id);
-      openGumroadCheckout(product.gumroadUrl || GUMROAD_PRODUCT_URL);
+      openGumroadCheckout(product.gumroadUrl!);
       setIsProcessing(false);
       return;
     }

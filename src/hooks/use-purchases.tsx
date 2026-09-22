@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { toast } from "sonner";
 import { products, type Product } from "@/lib/marketplace-data";
 import { useAuth } from "./use-auth";
-import { initGumroad, openGumroadCheckout, GUMROAD_PRODUCT_URL } from "@/lib/gumroad";
+import { initGumroad, openGumroadCheckout } from "@/lib/gumroad";
 
 interface PurchasesContextType {
   purchasedIds: string[];
@@ -90,7 +90,7 @@ export function PurchasesProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const targetUrl = gumroadUrl || product.gumroadUrl || GUMROAD_PRODUCT_URL;
+    const targetUrl = gumroadUrl || product.gumroadUrl!;
 
     // Store pending product id so we can unlock it when the sale event fires
     sessionStorage.setItem("__gumroad_pending_product", product.id);

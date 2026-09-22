@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Lock,
@@ -16,6 +17,7 @@ import {
 import { toast } from "sonner";
 import { type Product, formatPrice } from "@/lib/marketplace-data";
 import { usePurchases } from "@/hooks/use-purchases";
+import { useAuth } from "@/hooks/use-auth";
 import { PaymentCheckoutModal } from "./PaymentCheckoutModal";
 
 interface PromptUnlockModalProps {
@@ -25,6 +27,8 @@ interface PromptUnlockModalProps {
 
 export function PromptUnlockModal({ product, onClose }: PromptUnlockModalProps) {
   const { isPurchased } = usePurchases();
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
   const [selectedImgIndex, setSelectedImgIndex] = useState(0);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
@@ -324,7 +328,17 @@ export function PromptUnlockModal({ product, onClose }: PromptUnlockModalProps) 
                       </p>
                       <button
                         id="unlock-prompt-btn"
-                        onClick={() => setIsPaymentOpen(true)}
+                      onClick={() => {
+                        if (!currentUser) {
+                          toast.error("Login Required", {
+                            description: "Please sign in to purchase products.",
+                          });
+                          onClose();
+                          navigate({ to: "/login" });
+                          return;
+                        }
+                        setIsPaymentOpen(true);
+                      }}
                         className="glow-ring w-full flex items-center justify-center gap-2 rounded-full bg-[image:var(--gradient-brand)] py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
                       >
                         <CreditCard className="size-4" /> Unlock Prompt Now (${formatPrice(product.price)})

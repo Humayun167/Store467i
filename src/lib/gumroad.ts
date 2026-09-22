@@ -10,10 +10,6 @@ declare global {
   }
 }
 
-export const GUMROAD_PRODUCT_URL =
-  (import.meta.env["VITE_GUMROAD_PRODUCT_URL"] as string | undefined) ||
-  "https://yourname.gumroad.com/l/your-product";
-
 // ---------------------------------------------------------------------------
 // Sale-detection via postMessage
 // ---------------------------------------------------------------------------
