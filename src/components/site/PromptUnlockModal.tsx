@@ -9,7 +9,7 @@ import {
   Sparkles,
   Sliders,
   X,
-  CreditCard,
+  ShoppingBag,
   Image as ImageIcon,
   HelpCircle,
   Zap,
@@ -341,7 +341,7 @@ export function PromptUnlockModal({ product, onClose }: PromptUnlockModalProps) 
                       }}
                         className="glow-ring w-full flex items-center justify-center gap-2 rounded-full bg-[image:var(--gradient-brand)] py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
                       >
-                        <CreditCard className="size-4" /> Unlock Prompt Now (${formatPrice(product.price)})
+                        <ShoppingBag className="size-4" /> Unlock Prompt Now (${formatPrice(product.price)})
                       </button>
                     </div>
                   </div>

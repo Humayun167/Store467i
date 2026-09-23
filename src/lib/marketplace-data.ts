@@ -130,6 +130,141 @@ export const products: Product[] = [
       ],
     },
   },
+  {
+    id: "cyberpunk-sci-fi-cityscape",
+    name: "8K Cyberpunk Futuristic Sci-Fi Cityscape & Neon Lighting Prompt",
+    description:
+      "Ultra-detailed cinematic futuristic metropolis with volumetric neon fog, soaring holographic billboards, flying vehicle light trails, wet asphalt reflections, and dystopian architectural depth.",
+    price: 5,
+    category: "AI Prompts",
+    rating: 4.9,
+    sales: 2150,
+    image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80",
+    tags: ["trending", "new", "bestseller"],
+    gumroadUrl: "https://store467i.gumroad.com/l/upfoqt",
+    promptData: {
+      model: "Midjourney v6.1",
+      style: "Cyberpunk Cinematic Worldbuilding",
+      sampleImages: [
+        "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80",
+      ],
+      rawPrompt:
+        "Breathtaking 8K cinematic establishing shot of [location] in a neon-drenched cyberpunk metropolis at night, towering holographic megastructures, dense volumetric rain and steam, glowing cyan and magenta neon light trails from hover vehicles, hyper-detailed dystopian architecture, shot on Arri Alexa 65 with anamorphic lens, raytraced reflections on wet streets --ar 16:9 --v 6.1 --stylize 300 --quality 2",
+      negativePrompt:
+        "low resolution, blurry, oversaturated colors, flat lighting, daylight, amateur sketch, pixelated, noisy",
+      parameters: [
+        { label: "Price Deal", value: "$5.00 Instant Unlock" },
+        { label: "Model", value: "Midjourney v6.1 / FLUX.1" },
+        { label: "Aspect Ratio", value: "16:9 (Cinematic Widescreen)" },
+        { label: "Stylize", value: "300 (Maximum Visual Drama)" },
+        { label: "Quality", value: "2 (Ultra High Definition)" },
+      ],
+      variables: [
+        {
+          name: "location",
+          placeholder: "a bustling high-tech street market under towering megatowers",
+          description: "Define the specific environment, focal buildings, street activity, or vantage point.",
+        },
+      ],
+      editingInstructions: [
+        "Paste the unlocked prompt into Midjourney v6.1 Discord or web interface.",
+        "Replace [location] with your scene concept, such as 'a skyscraper rooftop landing pad' or 'a rainy underground cyber-alley'.",
+        "Tweak the color palette by changing 'cyan and magenta' to 'amber gold and emerald green' or 'monochrome noir with red highlights'.",
+      ],
+    },
+  },
+  {
+    id: "flux-commercial-product-photography",
+    name: "FLUX.1 Pro Ultra-Realistic Commercial Product & Branding Master Prompt",
+    description:
+      "Studio-grade luxury product photography prompt with softbox lighting, caustic glass reflections, matte textures, depth-of-field control, and 8K commercial advertising quality.",
+    price: 10,
+    category: "AI Prompts",
+    rating: 5.0,
+    sales: 1430,
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
+    tags: ["trending", "new", "bestseller"],
+    gumroadUrl: "https://store467i.gumroad.com/l/commercial-product",
+    promptData: {
+      model: "FLUX.1 Schnell",
+      style: "Commercial Studio Product Photography",
+      sampleImages: [
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=800&q=80",
+      ],
+      rawPrompt:
+        "Commercial advertising studio shot of [product], hero angle, set on a minimalist textured stone podium, dual softbox studio illumination with subtle warm rim light, crisp water droplet condensation, micro surface textures, shot on Hasselblad H6D-100c, 100mm macro lens f/4, clean editorial background, 8K ultra-sharp focus",
+      negativePrompt:
+        "cartoon, 3d render, blurry, artifacts, low quality, oversaturated, amateur lighting, harsh shadows, messy background",
+      parameters: [
+        { label: "Price Deal", value: "$10.00 Master License" },
+        { label: "Model", value: "FLUX.1 Schnell / Dev" },
+        { label: "Aspect Ratio", value: "1:1 / 4:5 (Product Showcase)" },
+        { label: "Lighting", value: "Dual Softbox + Rim Light" },
+        { label: "Resolution", value: "8K Ultra-Sharp Macro" },
+      ],
+      variables: [
+        {
+          name: "product",
+          placeholder: "a luxury matte black chronograph wristwatch with copper accents",
+          description: "Specify the item, material finishes, brand styling, or packaging.",
+        },
+      ],
+      editingInstructions: [
+        "Paste the unlocked prompt into your FLUX.1 or Midjourney generator.",
+        "Replace [product] with your target product (e.g., cosmetic perfume bottle, wireless earbuds, artisan coffee bag).",
+        "Change the podium base from 'minimalist textured stone' to 'floating glass pedestal' or 'wet volcanic rock' for different brand aesthetics.",
+      ],
+    },
+  },
+  {
+    id: "ultra-hdr-architectural-interior",
+    name: "8K Ultra-HDR Luxury Architectural & Minimalist Interior Master Prompt",
+    description:
+      "Studio-grade architectural photography prompt with golden hour volumetric window rays, polished concrete, warm oak textures, Hasselblad 24mm tilt-shift perspective, and 8K Scandinavian editorial depth.",
+    price: 10,
+    category: "AI Prompts",
+    rating: 5.0,
+    sales: 1290,
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+    tags: ["trending", "new", "bestseller"],
+    gumroadUrl: "https://store467i.gumroad.com/l/agqfqn",
+    promptData: {
+      model: "Midjourney v6.1",
+      style: "Architectural Digest Editorial Photography",
+      sampleImages: [
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
+      ],
+      rawPrompt:
+        "8K Architectural Digest interior photography of [space], bathed in soft golden morning sunlight streaming through floor-to-ceiling glass windows, warm oak woodwork, polished microcement floors, mid-century minimalist furniture, volumetric light dust rays, shot on Hasselblad H6D-100c, 24mm f/4 tilt-shift lens, hyper-realistic textures --ar 16:9 --v 6.1 --stylize 250 --quality 2",
+      negativePrompt:
+        "cluttered, cartoon, 3d render, plastic look, oversaturated, blurry, bad perspective, blown out highlights, low resolution",
+      parameters: [
+        { label: "Price Deal", value: "$10.00 Master License" },
+        { label: "Model", value: "Midjourney v6.1 / FLUX.1" },
+        { label: "Aspect Ratio", value: "16:9 (Architectural Widescreen)" },
+        { label: "Lens", value: "24mm Tilt-Shift Perspective" },
+        { label: "Quality", value: "2 (Maximum Architectural Detail)" },
+      ],
+      variables: [
+        {
+          name: "space",
+          placeholder: "a double-height modern Scandinavian living room overlooking a misty pine forest",
+          description: "Specify the room type, architectural style, key furniture, and outside view.",
+        },
+      ],
+      editingInstructions: [
+        "Copy and paste the prompt into Midjourney v6.1 Discord or web interface.",
+        "Replace [space] with your desired room concept (e.g., 'a luxury minimalist bathroom with marble tub' or 'a modern penthouse study').",
+        "Change 'golden morning sunlight' to 'moody blue hour dusk with warm interior recessed lighting' for evening ambience.",
+      ],
+    },
+  },
 ];
 
 export const features = [
